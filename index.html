@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>晚上10点目标</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #content {
+      text-align: center;
+      width: 80%;
+      max-width: 800px;
+    }
+
+    #dateTableContainer {
+      overflow-x: auto;
+    }
+
+    #dateTable {
+      border-collapse: collapse;
+      width: 80%;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    #dateTable th, #dateTable td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: center;
+    }
+
+    #gapTime {
+      margin-bottom: 15px;
+      font-size: 20px;
+	  letter-spacing: 1px;
+
+
+      display: flex;
+      justify-content: center;
+    }
+
+    #dateTable .current {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <div id="gapTime"></div>
+    <div id="dateTableContainer">
+      <table id="dateTable">
+        <tbody id="dateList"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function updateDateList() {
+        var dateListElement = document.getElementById('dateList');
+        if (dateListElement) {
+          dateListElement.innerHTML = '';
+
+          var currentDate = new Date();
+          var targetDate = new Date('2023-12-26T16:00:00Z'); // UTC
+          var timeDiff = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
+          var timeDiff_day = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
+          var timeDiff_hour = Math.floor((currentDate - targetDate) / (1000 * 60 * 60)) % 24;
+          var timeDiff_min = Math.floor((currentDate - targetDate) / (1000 * 60)) % 60;
+          var timeDiff_sec = Math.floor((currentDate - targetDate) / 1000) % 60;
+
+          for (var i = -3; i <= 3; i++) {
+            var date = new Date();
+            date.setUTCDate(currentDate.getUTCDate() + i);
+
+            var row = document.createElement('tr');
+            var dateString = date.toISOString().split('T')[0];
+            var number = calculateNumber(timeDiff, i);
+
+            row.innerHTML = `<td>${dateString}</td><td>${number}</td>`;
+
+            if (i === 0) {
+              row.classList.add('current');
+            }
+
+            dateListElement.appendChild(row);
+          }
+
+          showGapTime(timeDiff_day, timeDiff_hour, timeDiff_min, timeDiff_sec);
+        }
+      }
+
+      function calculateNumber(gapTime, i) {
+        var baseNumber = 258;
+        var rate = 1.015;
+        var updatedNumber = Math.round(baseNumber * Math.pow(rate, gapTime + i) * 100) / 100;
+        return updatedNumber;
+      }
+
+	function showGapTime(timeDiff_day, timeDiff_hour, timeDiff_min, timeDiff_sec) {
+		var gapTimeElement = document.getElementById('gapTime');
+		if (gapTimeElement) {
+			gapTimeElement.innerHTML = `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_day}</span>` + '天' +
+							           `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_hour}</span>`+ '时' +
+									   `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_min}</span> 分` +
+		   					           `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_sec}</span> 秒`;
+			}
+		}
+
+
+
+
+      updateDateList();
+      setInterval(function () {
+        updateDateList();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

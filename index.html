@@ -71,19 +71,30 @@
           dateListElement.innerHTML = '';
 
           var currentDate = new Date();
-          var targetDate = new Date('2023-12-26T16:00:00Z'); // UTC
-          var timeDiff = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
-          var timeDiff_day = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
-          var timeDiff_hour = Math.floor((currentDate - targetDate) / (1000 * 60 * 60)) % 24;
-          var timeDiff_min = Math.floor((currentDate - targetDate) / (1000 * 60)) % 60;
-          var timeDiff_sec = Math.floor((currentDate - targetDate) / 1000) % 60;
+		  var targetDate = new Date('2023-12-26T16:00:00Z'); // UTC
+          var timeDiff = Math.floor((currentDate-targetDate) / (1000 * 60 * 60 * 24));
+          var timeDiff_day = Math.floor((currentDate-targetDate) / (1000 * 60 * 60 * 24));
+          var timeDiff_hour = Math.floor((currentDate-targetDate) / (1000 * 60 * 60)) % 24;
+          var timeDiff_min = Math.floor((currentDate-targetDate) / (1000 * 60)) % 60;
+          var timeDiff_sec = Math.floor((currentDate-targetDate) / 1000) % 60;
 
           for (var i = -3; i <= 3; i++) {
             var date = new Date();
             date.setUTCDate(currentDate.getUTCDate() + i);
-
             var row = document.createElement('tr');
             var dateString = date.toISOString().split('T')[0];
+			var dateString = date.toLocaleString('en-US', {
+				timeZone: 'Asia/Shanghai', // 设置时区为东八区
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				//hour: '2-digit',
+				//minute: '2-digit',
+				//second: '2-digit',
+				hour12: false
+			})
+			var dateString = dateString.split('/')[2]+'-'+dateString.split('/')[0]+'-'+dateString.split('/')[1];
+
             var number = calculateNumber(timeDiff, i);
 
             row.innerHTML = `<td>${dateString}</td><td>${number}</td>`;
@@ -100,7 +111,7 @@
       }
 
       function calculateNumber(gapTime, i) {
-        var baseNumber = 258;
+        var baseNumber = 258*Math.pow(1.015,0);
         var rate = 1.015;
         var updatedNumber = Math.round(baseNumber * Math.pow(rate, gapTime + i) * 100) / 100;
         return updatedNumber;

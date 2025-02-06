@@ -111,8 +111,8 @@
       }
 
       function calculateNumber(gapTime, i) {
-        var baseNumber = 180*Math.pow(1.012,0);
-        var rate = 1.012;
+        var baseNumber = 80*Math.pow(1.02,0);
+        var rate = 1.02;
         var updatedNumber = Math.round(baseNumber * Math.pow(rate, gapTime + i) * 100) / 100;
         return updatedNumber;
       }

@@ -125,16 +125,18 @@
       var baseNumber = 80 * Math.pow(1.02, 0);
       var rate = 1.02;
       var updatedNumber = Math.round(baseNumber * Math.pow(rate, gapTime + i) * 100) / 100;
-      return updatedNumber;
+      // 使用 toLocaleString 直接添加英文逗号
+      return updatedNumber.toLocaleString();
     }
 
     function showGapTime(timeDiff_day, timeDiff_hour, timeDiff_min, timeDiff_sec) {
       var gapTimeElement = document.getElementById('gapTime');
       if (gapTimeElement) {
-        gapTimeElement.innerHTML = `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_day}</span>` + '天' +
-          `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_hour}</span>` + '时' +
-          `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_min}</span> 分` +
-          `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_sec}</span> 秒`;
+        // 使用 toLocaleString 直接添加英文逗号
+        gapTimeElement.innerHTML = `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_day.toLocaleString()}</span>` + '天' +
+          `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_hour.toLocaleString()}</span>` + '时' +
+          `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_min.toLocaleString()}</span> 分` +
+          `<span style="color:red;font-size: 19px;line-height: 1.5;">${timeDiff_sec.toLocaleString()}</span> 秒`;
       }
     }
   </script>

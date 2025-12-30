@@ -85,7 +85,7 @@
 
         var selectedTime = document.getElementById('selectedTime').value;
         var currentDate = selectedTime ? new Date(selectedTime) : new Date();
-        var targetDate = new Date('2025-11-09T16:00:00Z'); // UTC
+        var targetDate = new Date('2025-12-29T16:00:00Z'); // UTC
         var timeDiff = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
         var timeDiff_day = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
         var timeDiff_hour = Math.floor((currentDate - targetDate) / (1000 * 60 * 60)) % 24;
@@ -121,13 +121,25 @@
       }
     }
 
-    function calculateNumber(gapTime, i) {
-      var baseNumber = 200 * Math.pow(1.014, 0);
-      var rate = 1.014;
-      var updatedNumber = Math.round(baseNumber * Math.pow(rate, gapTime + i) * 100) / 100;
-      // 使用 toLocaleString 直接添加英文逗号
-      return updatedNumber.toLocaleString();
-    }
+	function calculateNumber(gapTime, i) {
+	  var value = 130;   // 初始值
+	  var steps = gapTime + i;
+
+	  for (var k = 0; k < steps; k++) {
+		var rate;
+		if (value <= 100000) {
+		  rate = 1.03;
+		} else if (value <= 1000000) {
+		  rate = 1.02;
+		} else {
+		  rate = 1.01;
+		}
+		value *= rate;
+	  }
+
+	  value = Math.round(value * 100) / 100;
+	  return value.toLocaleString();
+	}
 
     function showGapTime(timeDiff_day, timeDiff_hour, timeDiff_min, timeDiff_sec) {
       var gapTimeElement = document.getElementById('gapTime');

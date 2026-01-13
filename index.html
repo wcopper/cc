@@ -85,7 +85,7 @@
 
         var selectedTime = document.getElementById('selectedTime').value;
         var currentDate = selectedTime ? new Date(selectedTime) : new Date();
-        var targetDate = new Date('2026-1-14T16:00:00Z'); // UTC
+        var targetDate = new Date('2026-01-12T16:00:00Z'); // UTC
         var timeDiff = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
         var timeDiff_day = Math.floor((currentDate - targetDate) / (1000 * 60 * 60 * 24));
         var timeDiff_hour = Math.floor((currentDate - targetDate) / (1000 * 60 * 60)) % 24;
